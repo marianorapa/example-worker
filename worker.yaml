@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker
+  namespace: default
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      role: worker
+  template:
+    metadata:
+      labels:
+        role: worker
+    spec:
+      containers:
+      - name: worker
+        image: marianrap/sdypp_worker:0.13
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: REDIS_HOST
+          value: "redis-service.framework.services.gcp.com.ar."
+        - name: REDIS_PWD
+          value: "agusmarian"
+        - name: RABBIT_HOST
+          value: "rabbitmq-service.framework.services.gcp.com.ar."
+        - name: RABBIT_USER
+          value: "guest"
+        - name: RABBIT_PWD
+          value: "guest"
